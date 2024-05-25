@@ -1,0 +1,43 @@
+customCommands:
+  - key: '<c-r>'
+    context: 'commits'
+    command: 'hub browse -- "commit/{{.SelectedLocalCommit.Hash}}"'
+  - key: 'a'
+    context: 'commits'
+    command: 'echo {{.Form.Branch | quote}}'
+    prompts:
+      - type: 'input'
+        title: 'Which branch aaaa?'
+        key: 'Branch'
+        suggestions:
+          preset: 'branches'
+    description: 'Toggle file staged'
+  - key: 'C'
+    context: 'global'
+    command: "git status"
+    subprocess: true
+  - key: 'n'
+    context: 'localBranches'
+    prompts:
+      - type: 'menu'
+        title: 'What kind of branch is it?'
+        key: 'BranchType'
+        options:
+          - name: 'master'
+            description: 'a master branch'
+            value: 'master'
+          - name: 'hotfix'
+            description: 'a hotfix branch'
+            value: 'hotfix'
+          - name: 'release'
+            description: 'a release branch'
+            value: 'release'
+      - type: 'input'
+        title: 'What is the new branch name?'
+        key: 'BranchName'
+        initialValue: ''
+    command: "git checkout -b {{.Form.BranchName}} {{.Form.BranchType}}"
+    loadingText: 'Creating branch'
+os:
+  editPreset: 'vscode'
+
